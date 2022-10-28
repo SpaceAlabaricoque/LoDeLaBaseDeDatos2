@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,17 +41,6 @@ public class MainActivity extends AppCompatActivity {
         BTNCreateTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                DbHelper dbHelper = new DbHelper(MainActivity.this);
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-                if(db != null){
-                    Toast.makeText(MainActivity.this, "BASE DE DATOS CREADA", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "ERROR: BASE DE DATOS NO CREADA", Toast.LENGTH_SHORT).show();
-                }
-
                 logIn();
             }
         });
@@ -64,13 +54,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public void compareUser(){
+
+    }
 //añadir un ver contraseña
     public void logIn(){
         userName = findViewById(R.id.userName);
         userPassword = findViewById(R.id.userPassword);
-        logData.add(userName.getText().toString());
-        logData.add(userPassword.getText().toString());
 
+        DbHelper dbHelper = new DbHelper(MainActivity.this);
+
+        boolean h = dbHelper.searchUser(userName.getText().toString(), userPassword.getText().toString());
+
+        if(h == true){
+            Toast.makeText(this, "Se ha realizado el login correctamente", Toast.LENGTH_LONG).show();
+        }
     }
 
     /*

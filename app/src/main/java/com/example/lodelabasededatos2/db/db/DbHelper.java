@@ -1,5 +1,6 @@
 package com.example.lodelabasededatos2.db.db;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -59,6 +60,22 @@ public class DbHelper extends SQLiteOpenHelper {
         }else{
             return true;
         }
+    }
+
+    public boolean searchUser(String userName, String password){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS + " WHERE nombre = '"+userName+"' AND contraseña = '"+ password +"'" , null);
+        cursor.moveToFirst();
+        Log.d("Haber si fufa el cursor",cursor.getString(0));
+
+        if(!cursor.getString(0).equals(userName)){
+            return false;
+        }else if(!cursor.getString(1).equals(password)){
+            return false;
+        }else{
+            return true;
+        }
+
     }
 
     public Cursor getData(){

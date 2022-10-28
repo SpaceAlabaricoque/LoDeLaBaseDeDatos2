@@ -49,7 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }else{
                     Toast.makeText(MainActivity2.this, "el insert nofufa2", Toast.LENGTH_LONG).show();
                 }
-                getData(dbHelper, db);
+                getData();
 
             }
 
@@ -79,13 +79,17 @@ public class MainActivity2 extends AppCompatActivity {
 
     }
 
-    public void getData(DbHelper dbHelper, SQLiteDatabase db){
-
+    public void getData(){
+        DbHelper dbHelper = new DbHelper(MainActivity2.this);
         Cursor cursor = dbHelper.getData();
 
         Log.d("Nombre: ", cursor.getString(0));
         Log.d("Apellidos: ", cursor.getString(1));
         Log.d("Contraseña: ", cursor.getString(2));
         Log.d("Email: ", cursor.getString(3));
+        cursor.close();
     }
+
+
+
 }
