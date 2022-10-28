@@ -64,11 +64,13 @@ public class MainActivity extends AppCompatActivity {
         userPassword = findViewById(R.id.userPassword);
 
         DbHelper dbHelper = new DbHelper(MainActivity.this);
-
-        boolean h = dbHelper.searchUser(userName.getText().toString(), userPassword.getText().toString());
-
-        if(h == true){
-            Toast.makeText(this, "Se ha realizado el login correctamente", Toast.LENGTH_LONG).show();
+        if(userName.getText().toString().equals("") || userPassword.getText().toString().equals("")){
+            Toast.makeText(this, "Faltan Datos", Toast.LENGTH_SHORT).show();
+        }else{
+            boolean h = dbHelper.searchUser(userName.getText().toString(), userPassword.getText().toString());
+            if(h == true){
+                Toast.makeText(this, "Se ha realizado el login correctamente", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
