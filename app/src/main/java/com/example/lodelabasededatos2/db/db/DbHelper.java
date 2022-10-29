@@ -54,35 +54,34 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put("correo_electronico", email);
 
         long result = db.insert(TABLE_USUARIOS, null,values);
-        Log.d("HOLA :", String.valueOf(result));
-        if (result == -1){
-            return false;
-        }else{
-            return true;
-        }
+        return result != -1;
     }
 
     public boolean searchUser(String userName, String password){
         SQLiteDatabase db = this.getReadableDatabase();
+        boolean check = true;
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_USUARIOS + " WHERE nombre = '"+userName+"' AND contraseña = '"+ password +"'" , null);
-        cursor.moveToFirst();
-        Log.d("Haber si fufa el cursor",cursor.getString(0));
+        if(cursor.getCount() == 0){
+            check = false;
+        }else {
+            cursor.moveToFirst();
 
-        if(!cursor.getString(0).equals(userName)){
-            return false;
-        }else if(!cursor.getString(1).equals(password)){
-            return false;
-        }else{
-            return true;
+            if(!cursor.getString(0).equals(userName)){
+                check = false;
+            }else if(!cursor.getString(1).equals(password)){
+                check = false;
+            }else{
+                check = true;
+            }
         }
-
+        return check;
     }
 
     public Cursor getData(){
         SQLiteDatabase db = this.getReadableDatabase();
+
         Cursor cursor = db.rawQuery("SELECT * from " + TABLE_USUARIOS, null);
         cursor.moveToFirst();
-
 
         return cursor;
     }

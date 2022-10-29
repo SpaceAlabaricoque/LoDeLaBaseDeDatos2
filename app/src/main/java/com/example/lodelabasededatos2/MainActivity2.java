@@ -1,6 +1,5 @@
 package com.example.lodelabasededatos2;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -36,47 +35,54 @@ public class MainActivity2 extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userData();
-                DbHelper dbHelper = new DbHelper(MainActivity2.this);
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-                db = dbHelper.getReadableDatabase();
+                boolean pass = userData();
 
-                dbHelper.onCreate(db);
-                dbHelper.createTable(db);
-                boolean bol = dbHelper.insert(userData.getUserName(), userData.getUserSurName(), userData.getPassword(), userData.geteMail());
-                if (bol == true){
-                    Toast.makeText(MainActivity2.this, "el insert fufa", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(MainActivity2.this, "el insert nofufa2", Toast.LENGTH_LONG).show();
+                if(pass){
+                    DbHelper dbHelper = new DbHelper(MainActivity2.this);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                    dbHelper.onCreate(db);
+                    dbHelper.createTable(db);
+                    boolean bol = dbHelper.insert(userData.getUserName(), userData.getUserSurName(), userData.getPassword(), userData.geteMail());
+                    if (bol){
+                        Toast.makeText(MainActivity2.this, "Se ha registrado correctamente", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MainActivity2.this, "No se le ha podido registrar", Toast.LENGTH_SHORT).show();
+                    }
+                    getData();
                 }
-                getData();
+
 
             }
 
         });
     }
 
-    public void userData(){
+    public boolean userData(){
         userName = findViewById(R.id.RUserName);
         userSurname = findViewById(R.id.RUserSurmane);
         userPassword = findViewById(R.id.RUserPassword);
         userConPassword = findViewById(R.id.RConContraseña);
         email = findViewById(R.id.REmail);
 
-        if(userName.getText().toString().equals("") || userSurname.getText().toString().equals("") || userPassword.getText().toString().equals("") || userConPassword.getText().toString().equals("") || email.getText().toString().equals("") ){
+
+        boolean pass = false;
+        if(userName.getText().toString().equals("") || userSurname.getText().toString().equals("") || userPassword.getText().toString().equals("") || userConPassword.getText().toString().equals("") || email.getText().toString().equals("")){
             Toast.makeText(MainActivity2.this, "Algunos de los campos no esta relleno", Toast.LENGTH_LONG).show();
         }else if(userPassword.getText().toString().equals(userConPassword.getText().toString())){
+            pass =true;
             userData = new UserData(userName.getText().toString(),
                     userSurname.getText().toString(),
                     userPassword.getText().toString(),
                     userConPassword.getText().toString(),
                     email.getText().toString()
             );
+
         }else{
             Toast.makeText(MainActivity2.this, "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
         }
 
-
+        return pass;
     }
 
     public void getData(){
@@ -89,7 +95,4 @@ public class MainActivity2 extends AppCompatActivity {
         Log.d("Email: ", cursor.getString(3));
         cursor.close();
     }
-
-
-
 }
