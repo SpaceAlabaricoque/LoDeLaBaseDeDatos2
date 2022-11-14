@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public void compareUser(){
 
     }
-//añadir un ver contraseña
+
     public void logIn(){
         userName = findViewById(R.id.userName);
         userPassword = findViewById(R.id.userPassword);
